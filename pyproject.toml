@@ -1,0 +1,42 @@
+[project]
+name = "testforge"
+version = "0.1.0"
+description = "AI-Augmented, Scientifically Validated Unit Test Generation Framework"
+authors = [
+    { name = "TestForge Team" }
+]
+dependencies = [
+    "typer[all]",
+    "rich",
+    "pydantic",
+    "pytest",
+    "mutmut",
+    "libcst",
+    "python-dotenv",
+    "httpx",
+    "aider-chat",
+    "networkx",
+    "pytest-mock",
+    "coverage",
+    "Jinja2",
+    "tiktoken",
+    "GitPython",
+]
+requires-python = ">=3.10"
+
+[project.optional-dependencies]
+docs = [
+    "mkdocs-material",
+    "mkdocstrings[python]",
+]
+
+[project.scripts]
+testforge = "testforge.cli:app"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
