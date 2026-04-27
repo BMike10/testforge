@@ -133,7 +133,8 @@ def run_all(
     planner_model: Optional[str] = typer.Option(None, help="LLM model for the planning phase"),
     coder_model: Optional[str] = typer.Option(None, help="LLM model for the coding phase"),
     force: bool = typer.Option(False, "--force", help="Force run by clearing the execution ledger"),
-    dry_run: bool = typer.Option(False, "--dry-run", help="Output topological order without running")
+    dry_run: bool = typer.Option(False, "--dry-run", help="Output topological order without running"),
+    verbose: bool = typer.Option(False, "--verbose", "-v", help="Detailed dry-run output including full context audit")
 ):
     """
     [bold green]Run All[/bold green]: Execute the full iterative pipeline (Bottom-Up) on the entire codebase.
@@ -142,7 +143,7 @@ def run_all(
     
     agent = CoderAgent(mapper_model=mapper_model, planner_model=planner_model, coder_model=coder_model)
     orchestrator = Orchestrator(agent=agent)
-    asyncio.run(orchestrator.run_pipeline_on_project(path.absolute(), force=force, dry_run=dry_run))
+    asyncio.run(orchestrator.run_pipeline_on_project(path.absolute(), force=force, dry_run=dry_run, verbose=verbose))
 
 @app.command()
 def ci(

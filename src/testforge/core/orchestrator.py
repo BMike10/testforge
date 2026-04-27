@@ -21,7 +21,7 @@ class Orchestrator:
     def __init__(self, agent: Optional[CoderAgent] = None):
         self.agent = agent or CoderAgent()
 
-    async def run_pipeline_on_project(self, project_root: Path, force: bool = False, dry_run: bool = False):
+    async def run_pipeline_on_project(self, project_root: Path, force: bool = False, dry_run: bool = False, verbose: bool = False):
         """
         Runs the full iterative pipeline on the entire project in topological order.
         """
@@ -42,9 +42,6 @@ class Orchestrator:
                 plan_data = yaml.safe_load(f)
             order = plan_data.get("execution_order", [])
             skipped = []
-            
-            # Reconstruct graph partially if needed, or rely on plan_data
-            # For simplicity, we just use the order from the plan
         else:
             # 2. Build Dependency Graph
             console.print("[blue]Building dependency graph...[/blue]")
@@ -81,50 +78,14 @@ class Orchestrator:
                     yaml.dump(plan_data, f, default_flow_style=False, sort_keys=False)
                 console.print(f"[green]Generated editable plan file: {plan_file}[/green]")
 
-                from testforge.core.tokens import TokenEstimator
-                console.print("\n[bold yellow]--- Dry-Run Execution Plan ---[/bold yellow]")
-                for i, mod in enumerate(order, 1):
-                    phase_info = plan_data["phases"][f"Phase_{i}"]
-                    context_files = phase_info["context_files"]
-                    total_tokens = sum(TokenEstimator.estimate_file_tokens(project_root / f) for f in context_files)
-                    num_files = len(context_files)
-                    test_path = phase_info["expected_output"]
-                    
-                    console.print(f"[bold cyan][Phase {i}] Module:[/bold cyan] {mod}")
-                    console.print(f"  [dim]↳ Context Files:[/dim]")
-                    for ctx_file in context_files:
-                        console.print(f"      - {ctx_file}")
-                    console.print(f"  [dim]↳ Context Size:[/dim] {total_tokens} tokens ({num_files} files)")
-                    console.print(f"  [dim]↳ LLM Invoked:[/dim] gpt-4o (Planner & Coder)")
-                    console.print(f"  [dim]↳ Expected Output:[/dim] {test_path}")
-                console.print("[bold yellow]------------------------------[/bold yellow]\n")
-                
-                # First Step Deep Dive
-                if order:
-                    first_mod = order[0]
-                    first_abs_path = project_root / first_mod
-                    console.print(f"[bold magenta]--- First Step Deep Dive: {first_mod} ---[/bold magenta]")
-                    console.print("[dim]Simulating deterministic analysis...[/dim]")
-                    mod_info = ContextManager.analyze_file(first_abs_path, project_root)
-                    summary = f"Classes: {len(mod_info.classes)} | Functions: {len(mod_info.functions)} | Complexity: {mod_info.total_complexity}"
-                    
-                    context_block = "\n".join([f"- {f}" for f in plan_data["phases"]["Phase_1"]["context_files"]])
-                    deep_dive_text = (
-                        f"[bold]Target:[/bold] {first_mod}\n"
-                        f"[bold]Analysis:[/bold] {summary}\n"
-                        f"[bold]Context Files:[/bold]\n{context_block}\n"
-                        f"\n[italic]This data will be used to populate the 'plan_tests.j2' template for the LLM.[/italic]"
-                    )
-                    console.print(Panel(deep_dive_text, title="Phase 1 Context Preview", border_style="magenta"))
-                    
+                from testforge.utils.output import PipelineReport
+                PipelineReport.display_dry_run_summary(order, project_root, graph, verbose=verbose)
                 return
 
         # 3. Ensure Architecture Map exists
         arch_map_path = project_root / "architecture.md"
         if not arch_map_path.exists():
             console.print("[yellow]architecture.md not found. Generating a baseline...[/yellow]")
-            # In a real run, the user should probably run 'map' first,
-            # but we can trigger it here.
             arch_map = ContextManager.build_architecture_map(project_root)
             from testforge.utils.output import ArchitectureGenerator
             md = ArchitectureGenerator.to_markdown(arch_map)
@@ -134,7 +95,6 @@ class Orchestrator:
             abs_path = project_root / rel_path
             str_path = str(rel_path)
             
-            # Use custom context files if defined in plan
             custom_context = None
             if plan_data and "phases" in plan_data:
                 phase_key = f"Phase_{i}"
@@ -167,10 +127,8 @@ class Orchestrator:
         arch_path = arch_map_path or (root / "architecture.md")
         
         if not arch_path.exists():
-            # Create a dummy or baseline if missing
             with open(arch_path, "w") as f: f.write("# Architecture\n")
 
-        # 1. Deterministic Analysis for Planning
         console.print(f"[blue]Analyzing {file_path.name} deterministically...[/blue]")
         module_info = ContextManager.analyze_file(file_path, root)
         
@@ -186,7 +144,6 @@ class Orchestrator:
         if custom_context:
             deterministic_context["custom_context_files"] = custom_context
 
-        # 2. AI-Driven Planning
         rel_path = str(file_path.relative_to(root))
         rel_arch_path = str(arch_path.relative_to(root))
         
@@ -198,22 +155,17 @@ class Orchestrator:
         Runs the multi-stage pipeline on a single file.
         """
         rel_path = str(file_path.relative_to(project_root))
-        
-        # 1. Clear Agent Context for strict isolation
         self.agent.clear_context()
         
-        # 2. Planning Phase
         console.print(f"[yellow]Planning tests for {rel_path}...[/yellow]")
         plan_path = await self.plan_module_tests(file_path, project_root, arch_map_path, custom_context=custom_context)
         
-        # 3. Generation Phase
         test_path = f"tests/test_{file_path.stem}.py"
         console.print(f"[yellow]Generating test suite: {test_path}[/yellow]")
         await self.agent.generate_test_suite(rel_path, plan_path, test_path)
         
         abs_test_path = project_root / test_path
         
-        # 4. AI-Judge Loop (Pytest)
         for attempt in range(max_retries + 1):
             results = Evaluator.run_pytest(abs_test_path)
             if results["success"]:
@@ -228,7 +180,6 @@ class Orchestrator:
                 console.print(f"[bold red]✘ Max retries reached for {rel_path}.[/bold red]")
                 return results
 
-        # 5. Scientific Validation (Mutation Testing)
         console.print(f"[blue]Running Mutation Testing for {rel_path}...[/blue]")
         mut_results = Evaluator.run_mutation_testing(file_path, abs_test_path)
         
