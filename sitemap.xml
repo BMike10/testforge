@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+         <loc>https://your-repo.github.io/testforge/</loc>
+         <lastmod>2026-04-27</lastmod>
+    </url>
+    <url>
+         <loc>https://your-repo.github.io/testforge/advanced/</loc>
+         <lastmod>2026-04-27</lastmod>
+    </url>
+    <url>
+         <loc>https://your-repo.github.io/testforge/cli-reference/</loc>
+         <lastmod>2026-04-27</lastmod>
+    </url>
+    <url>
+         <loc>https://your-repo.github.io/testforge/contributing/</loc>
+         <lastmod>2026-04-27</lastmod>
+    </url>
+    <url>
+         <loc>https://your-repo.github.io/testforge/getting-started/</loc>
+         <lastmod>2026-04-27</lastmod>
+    </url>
+    <url>
+         <loc>https://your-repo.github.io/testforge/methodology/</loc>
+         <lastmod>2026-04-27</lastmod>
+    </url>
+</urlset>
