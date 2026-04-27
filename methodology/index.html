@@ -503,10 +503,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-topological-dependency-resolution" class="md-nav__link">
+  <a href="#1-intelligent-module-filtering" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Topological Dependency Resolution
+        1. Intelligent Module Filtering
       
     </span>
   </a>
@@ -514,10 +514,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-mccabe-cyclomatic-complexity" class="md-nav__link">
+  <a href="#2-topological-dependency-resolution" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. McCabe Cyclomatic Complexity
+        2. Topological Dependency Resolution
       
     </span>
   </a>
@@ -525,10 +525,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-boundary-value-analysis-bva" class="md-nav__link">
+  <a href="#3-mccabe-cyclomatic-complexity" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Boundary Value Analysis (BVA)
+        3. McCabe Cyclomatic Complexity
       
     </span>
   </a>
@@ -536,10 +536,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-dynamic-symbolic-execution-dse-simulation" class="md-nav__link">
+  <a href="#4-boundary-value-analysis-bva-dse-simulation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Dynamic Symbolic Execution (DSE) Simulation
+        4. Boundary Value Analysis (BVA) &amp; DSE Simulation
       
     </span>
   </a>
@@ -673,10 +673,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-topological-dependency-resolution" class="md-nav__link">
+  <a href="#1-intelligent-module-filtering" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Topological Dependency Resolution
+        1. Intelligent Module Filtering
       
     </span>
   </a>
@@ -684,10 +684,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-mccabe-cyclomatic-complexity" class="md-nav__link">
+  <a href="#2-topological-dependency-resolution" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. McCabe Cyclomatic Complexity
+        2. Topological Dependency Resolution
       
     </span>
   </a>
@@ -695,10 +695,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-boundary-value-analysis-bva" class="md-nav__link">
+  <a href="#3-mccabe-cyclomatic-complexity" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Boundary Value Analysis (BVA)
+        3. McCabe Cyclomatic Complexity
       
     </span>
   </a>
@@ -706,10 +706,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-dynamic-symbolic-execution-dse-simulation" class="md-nav__link">
+  <a href="#4-boundary-value-analysis-bva-dse-simulation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Dynamic Symbolic Execution (DSE) Simulation
+        4. Boundary Value Analysis (BVA) &amp; DSE Simulation
       
     </span>
   </a>
@@ -749,29 +749,68 @@
 
 <h1 id="scientific-core-methodology">Scientific Core &amp; Methodology 🔬<a class="headerlink" href="#scientific-core-methodology" title="Permanent link">&para;</a></h1>
 <p>TestForge is built on rigorous computer science principles to ensure that AI-generated tests are not just "hallucinations" of code, but valid engineering artifacts.</p>
-<h2 id="1-topological-dependency-resolution">1. Topological Dependency Resolution<a class="headerlink" href="#1-topological-dependency-resolution" title="Permanent link">&para;</a></h2>
-<p><strong>The Problem</strong>: Testing a high-level module before its dependencies leads to complex mocking requirements and "context bloat" in AI prompts.</p>
-<p><strong>The Solution</strong>: TestForge builds a Directed Acyclic Graph (DAG) of your entire codebase using AST.
-- It identifies "leaf" modules (those with no internal dependencies).
-- It generates tests bottom-up.
-- When testing a module, it knows exactly which internal components to mock because they have already been verified.</p>
-<h2 id="2-mccabe-cyclomatic-complexity">2. McCabe Cyclomatic Complexity<a class="headerlink" href="#2-mccabe-cyclomatic-complexity" title="Permanent link">&para;</a></h2>
-<p><strong>The Problem</strong>: Not all code is created equal. Simple getters don't need the same rigor as complex nested logic.</p>
-<p><strong>The Solution</strong>: We calculate the complexity score ($M = E - N + 2P$) for every function and class.
-- <strong>Risk-Based Prioritization</strong>: The AI is explicitly tasked to prioritize high-complexity paths.
-- <strong>Resource Allocation</strong>: You can use heavier, more expensive reasoning models specifically for high-complexity modules.</p>
-<h2 id="3-boundary-value-analysis-bva">3. Boundary Value Analysis (BVA)<a class="headerlink" href="#3-boundary-value-analysis-bva" title="Permanent link">&para;</a></h2>
-<p><strong>The Problem</strong>: AI often tests "happy paths" and misses edge cases.</p>
-<p><strong>The Solution</strong>: TestForge forces the AI to define equivalence classes and explicitly test $n-1$, $n$, and $n+1$ boundaries for every input parameter. This ensures robustness against off-by-one errors and overflow conditions.</p>
-<h2 id="4-dynamic-symbolic-execution-dse-simulation">4. Dynamic Symbolic Execution (DSE) Simulation<a class="headerlink" href="#4-dynamic-symbolic-execution-dse-simulation" title="Permanent link">&para;</a></h2>
-<p><strong>The Problem</strong>: Branch coverage is often missed by stochastic generation.</p>
-<p><strong>The Solution</strong>: We prompt the AI to simulate a DSE engine. It must map out every logical branch (if/else, try/except) and then generate specific inputs designed to traverse each unique path.</p>
+<hr />
+<h2 id="1-intelligent-module-filtering">1. Intelligent Module Filtering<a class="headerlink" href="#1-intelligent-module-filtering" title="Permanent link">&para;</a></h2>
+<p><strong>The Problem</strong>: Codebases are often cluttered with utility files, empty <code>__init__.py</code> modules, or data-only files that don't contain testable logic. Sending these to an LLM wastes tokens and generates noisy, low-value tests.</p>
+<p><strong>The Solution</strong>: TestForge employs a deterministic <strong>AST Heuristic</strong> to identify "testable" modules.</p>
+<div class="admonition info">
+<p class="admonition-title">Under the Hood: Filtering Logic</p>
+<p>When the Orchestrator scans your project, it invokes <code>ContextManager.analyze_file()</code> which uses the following logic:
+1.  <strong>AST Parsing</strong>: The file is parsed into an Abstract Syntax Tree using <code>ast</code>.
+2.  <strong>Symbol Extraction</strong>: We count the number of <code>ClassDef</code> and <code>FunctionDef</code> nodes.
+3.  <strong>Testability Flag</strong>: A module is marked <code>is_testable = True</code> <strong>only if</strong> it contains at least one class or one function.
+4.  <strong>Skipping</strong>: Files like empty <code>__init__.py</code> or global constant files are automatically identified as <code>is_testable = False</code> and moved to the "Skipped" list in the pipeline output.</p>
+</div>
+<hr />
+<h2 id="2-topological-dependency-resolution">2. Topological Dependency Resolution<a class="headerlink" href="#2-topological-dependency-resolution" title="Permanent link">&para;</a></h2>
+<p><strong>The Problem</strong>: Testing a high-level module (e.g., a CLI wrapper) before its core logic dependencies leads to "context bloat" and circular reasoning in AI prompts.</p>
+<p><strong>The Solution</strong>: TestForge builds a Directed Acyclic Graph (DAG) of your entire codebase.</p>
+<pre class="mermaid"><code>graph TD
+    Utils[utils/env_setup.py] --&gt; Core[core/context.py]
+    Core --&gt; Agent[agents/coder.py]
+    Agent --&gt; Orchestrator[core/orchestrator.py]
+    Orchestrator --&gt; CLI[cli.py]</code></pre>
+<div class="admonition info">
+<p class="admonition-title">Under the Hood: Graph Resolution</p>
+<ol>
+<li><strong>Import Scanning</strong>: We use AST to extract all internal <code>import</code> and <code>from ... import</code> statements.</li>
+<li><strong>DAG Construction</strong>: Using <code>networkx</code>, we map every module as a node and every import as a directed edge (dependency -&gt; dependent).</li>
+<li><strong>Bottom-Up Sort</strong>: We apply a <strong>Topological Sort</strong>. This ensures that "leaf" modules (those with 0 dependencies) are processed first.</li>
+<li><strong>Verified Context</strong>: By the time the AI reaches a high-level module, its dependencies have already been "validated" by the pipeline.</li>
+</ol>
+</div>
+<hr />
+<h2 id="3-mccabe-cyclomatic-complexity">3. McCabe Cyclomatic Complexity<a class="headerlink" href="#3-mccabe-cyclomatic-complexity" title="Permanent link">&para;</a></h2>
+<p><strong>The Problem</strong>: Simple "getter" methods don't require the same level of architectural rigor as complex nested algorithms.</p>
+<p><strong>The Solution</strong>: We calculate the complexity score ($M = E - N + 2P$) for every symbol.</p>
+<div class="admonition info">
+<p class="admonition-title">Under the Hood: Complexity Calculation</p>
+<p>TestForge calculates complexity during the deterministic analysis phase:
+*   <strong>Base Score</strong>: Every function starts with a complexity of 1.
+*   <strong>Decision Points</strong>: We increment the score for every <code>if</code>, <code>while</code>, <code>for</code>, <code>and</code>, <code>or</code>, and <code>except</code> block found in the AST.
+*   <strong>Risk Prioritization</strong>: High-complexity modules are flagged in the <code>execution_plan.yaml</code> and the AI is explicitly prompted to use <strong>Boundary Value Analysis</strong> to cover every logical branch.</p>
+</div>
+<hr />
+<h2 id="4-boundary-value-analysis-bva-dse-simulation">4. Boundary Value Analysis (BVA) &amp; DSE Simulation<a class="headerlink" href="#4-boundary-value-analysis-bva-dse-simulation" title="Permanent link">&para;</a></h2>
+<p><strong>The Problem</strong>: AI often generates "happy path" inputs and misses edge cases (e.g., empty lists, <code>None</code> values, or integer overflows).</p>
+<p><strong>The Solution</strong>: TestForge forces the AI to simulate a <strong>Dynamic Symbolic Execution (DSE)</strong> engine.</p>
+<ul>
+<li><strong>Equivalence Partitioning</strong>: The AI must define "Safe," "Boundary," and "Illegal" input ranges.</li>
+<li><strong>Simulated Execution</strong>: The prompt template (<code>plan_tests.j2</code>) requires the AI to trace every logical path identified in the McCabe analysis and design inputs that specifically trigger those paths.</li>
+</ul>
+<hr />
 <h2 id="5-mutation-guided-hardening">5. Mutation-Guided Hardening<a class="headerlink" href="#5-mutation-guided-hardening" title="Permanent link">&para;</a></h2>
-<p><strong>The Problem</strong>: Line coverage is a "vanity metric." You can have 100% coverage with zero meaningful assertions.</p>
-<p><strong>The Solution</strong>: We use <code>mutmut</code> to inject semantic faults (mutants) into your source code.
-- If a test suite passes but a mutant survives, the test is empirically weak.
-- TestForge feeds the surviving mutant's location and type back to the AI.
-- The AI is tasked with hardening the assertions to "kill" the mutant.</p>
+<p><strong>The Problem</strong>: 100% line coverage is a "vanity metric." You can execute a line without actually asserting its behavior is correct.</p>
+<p><strong>The Solution</strong>: We use <strong>Fault Injection</strong> via <code>mutmut</code> to prove test rigor.</p>
+<div class="admonition danger">
+<p class="admonition-title">The Mutant Test</p>
+<ol>
+<li><strong>Injection</strong>: <code>mutmut</code> modifies your source code (e.g., changing <code>&gt;</code> to <code>&gt;=</code>).</li>
+<li><strong>Execution</strong>: Your generated tests are run against the "mutant."</li>
+<li><strong>Survival Check</strong>: If the tests still pass, the mutant "survived," meaning your assertions are weak.</li>
+<li><strong>Autonomous Healing</strong>: TestForge identifies the survival, feeds the mutant type back to the AI, and demands a stronger assertion to "kill" it.</li>
+</ol>
+</div>
 
 
 

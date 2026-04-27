@@ -541,28 +541,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#testforge-plan" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        testforge plan
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#testforge-generate" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        testforge generate
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#testforge-run-all" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -578,6 +556,17 @@
     <span class="md-ellipsis">
       
         testforge ci
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testforge-generate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        testforge generate
       
     </span>
   </a>
@@ -695,28 +684,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#testforge-plan" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        testforge plan
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#testforge-generate" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        testforge generate
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#testforge-run-all" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -732,6 +699,17 @@
     <span class="md-ellipsis">
       
         testforge ci
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testforge-generate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        testforge generate
       
     </span>
   </a>
@@ -770,7 +748,8 @@
 
 
 <h1 id="cli-reference">CLI Reference 🛠️<a class="headerlink" href="#cli-reference" title="Permanent link">&para;</a></h1>
-<p>Detailed documentation for the TestForge command-line interface.</p>
+<p>Detailed documentation for the TestForge command-line interface. Each command is designed to be deterministic and transparent.</p>
+<hr />
 <h2 id="testforge-map"><code>testforge map</code><a class="headerlink" href="#testforge-map" title="Permanent link">&para;</a></h2>
 <p>Builds the architectural topography of the codebase.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>testforge<span class="w"> </span>map<span class="w"> </span><span class="o">[</span>PATH<span class="o">]</span><span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
@@ -781,21 +760,64 @@
 - <code>--output PATH</code>: Output file for the architecture map. (Default: <code>architecture.md</code>)
 - <code>--mapper-model TEXT</code>: LLM model for the mapping phase.
 - <code>--dry-run</code>: Estimate tokens and cost without running AI.</p>
+<div class="admonition info">
+<p class="admonition-title">Under the Hood: Mapping Logic</p>
+<ol>
+<li><strong>File Discovery</strong>: Scans for all <code>.py</code> files, respecting <code>.gitignore</code>.</li>
+<li><strong>AST Analysis</strong>: Extracts classes, functions, and docstrings.</li>
+<li><strong>Cross-Reference</strong>: Matches internal imports to create the dependency mapping.</li>
+<li><strong>Markdown Generation</strong>: Formats the <code>ModuleInfo</code> objects into a human-readable <code>architecture.md</code>.</li>
+</ol>
+</div>
 <hr />
-<h2 id="testforge-plan"><code>testforge plan</code><a class="headerlink" href="#testforge-plan" title="Permanent link">&para;</a></h2>
-<p>Generates a 'Scientific Test Plan' for a specific module.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>testforge<span class="w"> </span>plan<span class="w"> </span><span class="o">[</span>FILE_PATH<span class="o">]</span><span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+<h2 id="testforge-run-all"><code>testforge run-all</code><a class="headerlink" href="#testforge-run-all" title="Permanent link">&para;</a></h2>
+<p>The full iterative pipeline (Bottom-Up) on the entire codebase.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>testforge<span class="w"> </span>run-all<span class="w"> </span><span class="o">[</span>PATH<span class="o">]</span><span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
 </code></pre></div>
 <p><strong>Arguments</strong>:
-- <code>FILE_PATH</code>: The specific file to plan tests for.</p>
+- <code>PATH</code>: Project root directory.</p>
+<p><strong>Options</strong>:
+- <code>--mapper-model TEXT</code>: LLM model for the mapping phase.
+- <code>--planner-model TEXT</code>: LLM model for the planning phase.
+- <code>--coder-model TEXT</code>: LLM model for the coding phase.
+- <code>--force</code>: Force run by clearing the execution ledger and ignore <code>execution_plan.yaml</code>.
+- <code>--dry-run</code>: Perform a full simulation and generate an editable execution plan.</p>
+<div class="admonition info">
+<p class="admonition-title">Under the Hood: The Master Pipeline</p>
+<ol>
+<li><strong>Dependency Sort</strong>: Builds the DAG and calculates the topological processing order.</li>
+<li><strong>Heuristic Filtering</strong>: Skips logic-less modules (0 classes/functions).</li>
+<li><strong>Execution Plan</strong>: <ul>
+<li>If <code>--dry-run</code>: Generates <code>execution_plan.yaml</code> and displays a detailed token/context report.</li>
+<li>If Standard Run: Checks for <code>execution_plan.yaml</code>. If found, it uses the <strong>user-modified order and context</strong>.</li>
+</ul>
+</li>
+<li><strong>State Management</strong>: Updates <code>.testforge/ledger.json</code> after every module to enable "Pause and Resume" capability.</li>
+<li><strong>Scientific Loop</strong>: For each module: <code>Plan -&gt; Generate -&gt; Pytest -&gt; Mutmut Hardening</code>.</li>
+<li><strong>Reporting</strong>: Displays the final visual dashboard with Milestone status.</li>
+</ol>
+</div>
+<hr />
+<h2 id="testforge-ci"><code>testforge ci</code><a class="headerlink" href="#testforge-ci" title="Permanent link">&para;</a></h2>
+<p>CI/CD Headless Mode: Generate tests only for modified files and their dependents.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>testforge<span class="w"> </span>ci<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</code></pre></div>
 <p><strong>Options</strong>:
 - <code>--project-root PATH</code>: Project root directory.
-- <code>--planner-model TEXT</code>: LLM model for the planning phase.
-- <code>--dry-run</code>: Estimate tokens and cost without running AI.</p>
+- <code>--base-branch TEXT</code>: Base branch to diff against. (Default: <code>main</code>)
+- <code>--dry-run</code>: Output topological order without running.</p>
+<div class="admonition info">
+<p class="admonition-title">Under the Hood: Change Analysis</p>
+<ol>
+<li><strong>Git Diff</strong>: Uses <code>GitPython</code> to identify files changed between the current HEAD and the <code>base-branch</code>.</li>
+<li><strong>Impact Analysis</strong>: Consults the dependency graph to find all modules that import the changed files (downstream dependents).</li>
+<li><strong>Targeted Run</strong>: Executes the <code>run-all</code> logic <strong>only</strong> on this subset of modules, ensuring PRs are verified without re-testing the entire codebase.</li>
+</ol>
+</div>
 <hr />
 <h2 id="testforge-generate"><code>testforge generate</code><a class="headerlink" href="#testforge-generate" title="Permanent link">&para;</a></h2>
-<p>Generates and validates a unit test suite using the AI-Judge loop.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>testforge<span class="w"> </span>generate<span class="w"> </span><span class="o">[</span>FILE_PATH<span class="o">]</span><span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+<p>Generates and validates a unit test suite for a single file.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>testforge<span class="w"> </span>generate<span class="w"> </span><span class="o">[</span>FILE_PATH<span class="o">]</span><span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
 </code></pre></div>
 <p><strong>Arguments</strong>:
 - <code>FILE_PATH</code>: The file to generate tests for.</p>
@@ -804,36 +826,37 @@
 - <code>--planner-model TEXT</code>: LLM model for the planning phase.
 - <code>--coder-model TEXT</code>: LLM model for the coding phase.
 - <code>--dry-run</code>: Estimate tokens and cost without running AI.</p>
-<hr />
-<h2 id="testforge-run-all"><code>testforge run-all</code><a class="headerlink" href="#testforge-run-all" title="Permanent link">&para;</a></h2>
-<p>The full iterative pipeline (Bottom-Up) on the entire codebase.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>testforge<span class="w"> </span>run-all<span class="w"> </span><span class="o">[</span>PATH<span class="o">]</span><span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
-</code></pre></div>
-<p><strong>Arguments</strong>:
-- <code>PATH</code>: Project root directory.</p>
-<p><strong>Options</strong>:
-- <code>--mapper-model TEXT</code>: LLM model for the mapping phase.
-- <code>--planner-model TEXT</code>: LLM model for the planning phase.
-- <code>--coder-model TEXT</code>: LLM model for the coding phase.
-- <code>--force</code>: Force run by clearing the execution ledger.
-- <code>--dry-run</code>: Output topological order without running.</p>
-<hr />
-<h2 id="testforge-ci"><code>testforge ci</code><a class="headerlink" href="#testforge-ci" title="Permanent link">&para;</a></h2>
-<p>CI/CD Headless Mode: Generate tests only for modified files and their dependents.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>testforge<span class="w"> </span>ci<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
-</code></pre></div>
-<p><strong>Options</strong>:
-- <code>--project-root PATH</code>: Project root directory.
-- <code>--base-branch TEXT</code>: Base branch to diff against. (Default: <code>main</code>)
-- <code>--dry-run</code>: Output topological order without running.</p>
+<div class="admonition info">
+<p class="admonition-title">Under the Hood: Single-File Logic</p>
+<ol>
+<li><strong>Isolation</strong>: Clears the AI context to prevent "leaking" information from previous files.</li>
+<li><strong>Deterministic Preview</strong>: Summarizes the module's complexity and interface before calling the LLM.</li>
+<li><strong>Self-Healing Loop</strong>: Runs up to 3 repair attempts if <code>pytest</code> fails, feeding the traceback directly back to the AI.</li>
+</ol>
+</div>
 <hr />
 <h2 id="testforge-refactor-fixtures"><code>testforge refactor-fixtures</code><a class="headerlink" href="#testforge-refactor-fixtures" title="Permanent link">&para;</a></h2>
 <p>Scans test files and elevates local fixtures to <code>conftest.py</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>testforge<span class="w"> </span>refactor-fixtures<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>testforge<span class="w"> </span>refactor-fixtures<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
 </code></pre></div>
 <p><strong>Options</strong>:
 - <code>--project-root PATH</code>: Project root directory.
 - <code>--coder-model TEXT</code>: LLM model for the refactoring phase.</p>
+<div class="admonition info">
+<p class="admonition-title">Under the Hood: Global Elevation</p>
+<ol>
+<li><strong>Discovery</strong>: Recursively scans the <code>tests/</code> directory for all files matching <code>test_*.py</code>.</li>
+<li><strong>State Initialization</strong>: Ensures a <code>tests/conftest.py</code> file exists to act as the destination.</li>
+<li><strong>Cross-File Analysis</strong>: Loads all test files and the <code>conftest.py</code> into the LLM's context.</li>
+<li><strong>Deduplication</strong>: The AI identifies <code>@pytest.fixture</code> definitions that are duplicated or highly similar across multiple files.</li>
+<li><strong>Refactoring</strong>: <ul>
+<li>Extracts the fixtures to <code>conftest.py</code>.</li>
+<li>Removes local definitions from individual test files.</li>
+<li>Updates imports and references to ensure tests remain functional and "dry".</li>
+</ul>
+</li>
+</ol>
+</div>
 
 
 
