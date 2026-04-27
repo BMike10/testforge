@@ -41,7 +41,7 @@ testforge generate src/core/logic.py
 
 For full installation guides, advanced configuration, and methodology deep dives, visit our documentation site:
 
-👉 **[Read the Full Documentation](https://your-repo.github.io/testforge/)**
+👉 **[Read the Full Documentation](https://bmike10.github.io/testforge)**
 
 ---
 
