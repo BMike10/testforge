@@ -8,7 +8,7 @@
 
 ### Install from Source
 ```bash
-git clone https://github.com/your-repo/testforge.git
+git clone https://github.com/BMike10/testforge/
 cd testforge
 python -m venv .venv
 source .venv/bin/activate

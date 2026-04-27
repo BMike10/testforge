@@ -1,6 +1,11 @@
 from pathlib import Path
 from typing import Dict, Any
 from testforge.core.context import ModuleInfo
+from testforge.core.state import StateTracker
+from rich.console import Console
+from rich.panel import Panel
+from rich.table import Table
+from rich.columns import Columns
 
 class ArchitectureGenerator:
     """
@@ -46,3 +51,45 @@ class ArchitectureGenerator:
     def save_to_file(md_content: str, output_path: Path):
         with open(output_path, "w") as f:
             f.write(md_content)
+
+class PipelineReport:
+    """
+    Generates a visual dashboard for the pipeline execution state.
+    """
+    @staticmethod
+    def display_status(tracker: StateTracker, total_testable: int):
+        console = Console()
+        stats = tracker.get_stats()
+        validated = stats["validated"]
+        failed = stats["failed"]
+        not_started = max(0, total_testable - validated - failed)
+        
+        percent_done = (validated / total_testable * 100) if total_testable > 0 else 0
+        
+        m1_status = "✅" if percent_done >= 80 else "⏳"
+        m2_status = "✅" if percent_done >= 90 else "⏳"
+        m3_status = "✅" if percent_done == 100 and failed == 0 else "⏳"
+
+        table = Table(show_header=False, box=None)
+        table.add_column("Metric", style="cyan")
+        table.add_column("Value", justify="right")
+
+        table.add_row("Total modules", str(total_testable))
+        table.add_row("Validated", f"[green]{validated}[/green]")
+        table.add_row("Failed", f"[red]{failed}[/red]")
+        table.add_row("Not started", f"[yellow]{not_started}[/yellow]")
+
+        milestones_table = Table(show_header=False, box=None)
+        milestones_table.add_column("Milestone", style="cyan")
+        milestones_table.add_column("Status", justify="center")
+        
+        milestones_table.add_row("M1 Core >= 80%", m1_status)
+        milestones_table.add_row("M2 P0 >= 90%", m2_status)
+        milestones_table.add_row("M3 Suite stable", m3_status)
+
+        console.print("\n")
+        console.print(Columns([
+            Panel(table, title="[bold]Pipeline Status[/bold]", expand=True),
+            Panel(milestones_table, title="[bold]Milestones[/bold]", expand=True)
+        ]))
+        console.print("\n")

@@ -7,39 +7,63 @@
   <a href="https://your-repo.github.io/testforge/"><img src="https://img.shields.io/badge/Docs-MkDocs-blueviolet.svg" alt="Documentation"></a>
 </p>
 
-**TestForge** is a high-integrity CLI framework that combines **Deterministic Static Analysis** with **Agentic AI** (powered by Aider) to generate, validate, and harden Python unit test suites.
+**TestForge** is a high-integrity CLI framework that bridges the gap between **Deterministic Static Analysis** and **Agentic AI**. It doesn't just "write tests"—it builds behaviorally rigorous, scientifically validated test suites that you can trust.
 
-It moves beyond simple line coverage by employing **McCabe Cyclomatic Complexity**, **Topological Dependency Resolution**, and **Mutation Testing** to ensure tests are structurally sound and behaviorally rigorous.
+---
+
+## 💎 Why TestForge?
+
+In a world of stochastic AI generation, TestForge enforces engineering discipline through a **Plan-First** architecture.
+
+<table align="center">
+  <tr>
+    <td align="center"><b>Deterministic Filtering</b></td>
+    <td align="center"><b>Topological Sorting</b></td>
+    <td align="center"><b>Mutation Hardening</b></td>
+  </tr>
+  <tr>
+    <td>Skips logic-less boilerplate to save tokens and focus on high-risk code.</td>
+    <td>Builds a DAG of your project to test dependencies bottom-up.</td>
+    <td>Uses fault injection to prove your tests actually catch bugs.</td>
+  </tr>
+</table>
+
+---
+
+## 🚀 The TestForge Workflow
+
+### 1. Map & Analyze
+Build a mental model of your codebase's architecture and complexity.
+```bash
+testforge map .
+```
+
+### 2. Plan (Dry-Run)
+Generate an editable **Execution Plan** to preview context size and costs.
+```bash
+testforge run-all . --dry-run
+```
+
+### 3. Execute & Validate
+Run the self-healing pipeline to generate, run, and harden your tests.
+```bash
+testforge run-all .
+```
 
 ---
 
 ## 🔬 Core Methodology
 
-- **Topological Sorting**: Builds a DAG of your codebase to test leaf modules first, preventing circular reasoning.
-- **Complexity Analysis**: Deterministically calculates McCabe metrics to prioritize testing for high-risk code.
-- **Mutation-Guided**: Uses fault injection (`mutmut`) to harden tests until they can empirically "kill" mutants.
-- **BVA & DSE**: Forces AI to test boundary values and simulate path execution.
-
----
-
-## 🚀 Quick Start
-
-```bash
-# Install
-pip install git+https://github.com/your-repo/testforge.git
-
-# Map your project
-testforge map src/
-
-# Plan and Generate tests for a file
-testforge generate src/core/logic.py
-```
+*   **McCabe Prioritization**: Focuses testing efforts on high-complexity paths.
+*   **BVA & DSE Simulation**: Forces the AI to test boundary values and simulate path execution.
+*   **Editable Execution Planning**: You have total control over the context and order via `execution_plan.yaml`.
+*   **Visual Dashboards**: Track project health via Scientific Milestones (M1/M2/M3).
 
 ---
 
 ## 📖 Documentation
 
-For full installation guides, advanced configuration, and methodology deep dives, visit our documentation site:
+For deep dives into our scientific core and advanced configuration, visit our documentation:
 
 👉 **[Read the Full Documentation](https://bmike10.github.io/testforge)**
 

@@ -47,6 +47,12 @@ class StateTracker:
             return True
         return False
 
+    def get_stats(self) -> dict:
+        modules = self.state.get("modules", {})
+        validated = sum(1 for m in modules.values() if m.get("status") == "completed")
+        failed = sum(1 for m in modules.values() if m.get("status") == "failed")
+        return {"validated": validated, "failed": failed}
+
     def clear(self):
         self.state = {"modules": {}}
         self._save()

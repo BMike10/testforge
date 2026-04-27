@@ -51,6 +51,7 @@ coverage.xml
 # --- Documentation ---
 site/
 docs/_build/
+docs/notes/
 
 # --- IDEs & Editors ---
 .idea/
@@ -66,3 +67,4 @@ Thumbs.db
 # --- Miscellaneous ---
 .aider*
 *.log
+GEMINI.md

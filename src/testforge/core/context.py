@@ -27,6 +27,7 @@ class ModuleInfo(BaseModel):
     imports: List[str]
     internal_dependencies: Set[str] = set()
     total_complexity: int = 0
+    is_testable: bool = True
 
 class ContextManager:
     """
@@ -140,6 +141,10 @@ class ContextManager:
                 func_info = ContextManager._extract_function_info(node, content)
                 module_info.functions.append(func_info)
                 module_info.total_complexity += func_info.complexity
+        
+        # Heuristic 1 & 2: If there are no functions and no classes, it's not testable
+        if not module_info.classes and not module_info.functions:
+            module_info.is_testable = False
         
         return module_info
 

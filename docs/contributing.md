@@ -6,7 +6,7 @@ We welcome contributions from the community! Whether you're fixing bugs, adding 
 
 1.  **Clone the repository**:
     ```bash
-    git clone https://github.com/your-repo/testforge.git
+    git clone https://github.com/BMike10/testforge/
     cd testforge
     ```
 2.  **Install in editable mode with development dependencies**:
