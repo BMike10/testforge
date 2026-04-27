@@ -1,8 +1,8 @@
 site_name: TestForge
 site_description: AI-Augmented, Scientifically Validated Unit Test Generation Framework
-site_url: https://your-repo.github.io/testforge/
-repo_url: https://github.com/your-repo/testforge
-repo_name: your-repo/testforge
+site_url: https://bmike10.github.io/testforge
+repo_url: https://github.com/BMike10/testforge/
+repo_name: testforge
 edit_uri: edit/main/docs/
 
 theme:

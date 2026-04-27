@@ -1,3 +1,4 @@
+from testforge.utils.env_setup import EnvironmentManager
 import typer
 import asyncio
 from rich.console import Console
