@@ -3,6 +3,7 @@ import typer
 import asyncio
 import os
 import shutil
+import subprocess
 from rich.console import Console
 from typing import Optional
 from pathlib import Path
@@ -240,6 +241,49 @@ def refactor_fixtures(
     )
     agent.coder.run(prompt)
     console.print("[bold green]Fixture refactoring complete.[/bold green]")
+
+@app.command()
+def chat(
+    files: Optional[list[Path]] = typer.Argument(None, help="Additional files to include in the chat"),
+    project_root: Path = typer.Option(Path("."), help="Project root directory"),
+    coder_model: Optional[str] = typer.Option(None, help="LLM model for the chat session")
+):
+    """
+    [bold blue]Chat[/bold blue]: Launch an interactive Aider session pre-loaded with TestForge context.
+    """
+    console.print("[bold blue]Launching interactive Aider session...[/bold blue]")
+    
+    arch_map_path = project_root.absolute() / "architecture.md"
+    if not arch_map_path.exists():
+        console.print("[yellow]architecture.md not found. Generating it for context...[/yellow]")
+        arch_map = ContextManager.build_architecture_map(project_root.absolute())
+        md = ArchitectureGenerator.to_markdown(arch_map)
+        ArchitectureGenerator.save_to_file(md, arch_map_path)
+    
+    # Construct the aider command
+    cmd = ["aider"]
+    
+    # Use specified model or fall back to environment
+    model = coder_model or os.getenv("LLM_CODER_MODEL") or os.getenv("LLM_MODEL_NAME")
+    if model:
+        # We need to format it for aider if it's a custom provider
+        # But for the CLI, we'll just pass it as is and let aider handle it or the user provide the correct name
+        cmd.extend(["--model", model])
+    
+    # Add architecture.md as read-only context
+    cmd.extend(["--read", str(arch_map_path)])
+    
+    # Add any additional files
+    if files:
+        for f in files:
+            cmd.append(str(f.absolute()))
+            
+    try:
+        subprocess.run(cmd, check=True)
+    except FileNotFoundError:
+        console.print("[red]Error: 'aider' CLI not found. Please install it with 'pip install aider-chat'.[/red]")
+    except subprocess.CalledProcessError as e:
+        console.print(f"[red]Aider session exited with an error: {e}[/red]")
 
 from testforge.core.templates import TemplateManager
 
