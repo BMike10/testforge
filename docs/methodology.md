@@ -62,7 +62,19 @@ graph TD
 
 ---
 
-## 5. Mutation-Guided Hardening
+## 5. Context-Efficient Smart Validation
+**The Problem**: Iterative repair cycles can lead to "Context Explosion." Feeding large tracebacks or the entire codebase into an LLM repeatedly causes high costs, slow responses, and increased hallucination rates.
+
+**The Solution**: TestForge implements a multi-stage **Smart Validation Pipeline**.
+
+!!! info "Under the Hood: Smart Repair Logic"
+    1.  **Syntax Pre-validation**: We run a static syntax check using `ast.parse()` on every generated test. If a syntax error is found, we bypass the heavy `pytest` execution and immediately task the AI with fixing the code structure.
+    2.  **Smart Error Truncation**: When tests fail, we don't send the full raw output. Our regex-based parser extracts only the `FAILURES`, `ERRORS`, and `short test summary info` sections. If the output is still too large, it is truncated from the middle to preserve the most critical failure signals.
+    3.  **Enriched Context Isolation**: During repair, we initialize a focused AI context containing only the target module source, the original test plan, and the system architecture map. This prevents the agent from losing sight of the engineering intent or getting lost in unrelated dependencies.
+
+---
+
+## 6. Mutation-Guided Hardening
 **The Problem**: 100% line coverage is a "vanity metric." You can execute a line without actually asserting its behavior is correct.
 
 **The Solution**: We use **Fault Injection** via `mutmut` to prove test rigor.

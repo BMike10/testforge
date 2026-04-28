@@ -11,12 +11,16 @@ class TemplateManager:
     def __init__(self, project_root: Path = Path(".")):
         self.project_root = project_root
         
-        # User defined templates path
-        self.user_templates_dir = self.project_root / ".testforge" / "templates"
+        # User defined templates path - Priority 1: Env Var, Priority 2: .testforge/templates
+        env_templates_dir = os.environ.get("TESTFORGE_TEMPLATES_DIR")
+        if env_templates_dir:
+            self.user_templates_dir = Path(env_templates_dir)
+        else:
+            self.user_templates_dir = self.project_root / ".testforge" / "templates"
         
         # Default package templates path
-        # Corrected to point to the 'templates' directory inside this module's folder.
-        self.default_templates_dir = Path(__file__).parent / "templates"
+        # Corrected to point to the 'templates' directory inside the parent 'testforge' package.
+        self.default_templates_dir = Path(__file__).parent.parent / "templates"
         
         # Set up Jinja2 environment to look in user dir first, then default dir
         search_paths = []

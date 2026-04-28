@@ -1,6 +1,8 @@
 from testforge.utils.env_setup import EnvironmentManager
 import typer
 import asyncio
+import os
+import shutil
 from rich.console import Console
 from typing import Optional
 from pathlib import Path
@@ -238,6 +240,47 @@ def refactor_fixtures(
     )
     agent.coder.run(prompt)
     console.print("[bold green]Fixture refactoring complete.[/bold green]")
+
+from testforge.core.templates import TemplateManager
+
+@app.command()
+def init_templates(
+    project_root: Path = typer.Option(Path("."), help="Project root directory"),
+    force: bool = typer.Option(False, "--force", help="Overwrite existing templates")
+):
+    """
+    [bold yellow]Initialize Templates[/bold yellow]: Copy default Jinja2 templates to the user's workspace for customization.
+    """
+    manager = TemplateManager(project_root=project_root)
+    target_dir = manager.user_templates_dir
+    source_dir = manager.default_templates_dir
+    
+    if not source_dir.exists():
+        console.print(f"[red]Error: Default templates directory not found at {source_dir}[/red]")
+        raise typer.Exit(code=1)
+        
+    console.print(f"[blue]Target directory:[/blue] {target_dir}")
+    
+    if target_dir.exists() and not force:
+        console.print("[yellow]Templates directory already exists. Use --force to overwrite.[/yellow]")
+        return
+        
+    if not target_dir.exists():
+        target_dir.mkdir(parents=True)
+        
+    # Copy all .j2 files
+    templates = list(source_dir.glob("*.j2"))
+    if not templates:
+        console.print(f"[yellow]No templates found in {source_dir}[/yellow]")
+        return
+        
+    for template in templates:
+        dest = target_dir / template.name
+        shutil.copy2(template, dest)
+        console.print(f" - [green]Copied:[/green] {template.name}")
+        
+    console.print("\n[bold green]Success![/bold green] You can now customize your templates in the target directory.")
+    console.print("TestForge will prioritize these templates over the package defaults.")
 
 if __name__ == "__main__":
     app()

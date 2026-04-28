@@ -75,8 +75,27 @@ You can optimize costs and performance by routing different phases to different 
 ---
 
 ## Template Overrides
-Every LLM interaction is based on Jinja2 templates. You can customize these to enforce your company's coding standards.
+Every LLM interaction is based on Jinja2 templates. You can customize these to enforce your company's coding standards or add specific scientific constraints.
 
-1.  Create a folder named `.testforge/templates/` in your project root.
-2.  Copy any default template from the TestForge source (e.g., `plan_tests.j2`).
-3.  Modify the copy. TestForge will now prioritize your local version.
+### The Overriding Logic
+TestForge searches for templates in the following order of priority:
+1.  **Custom Directory**: The path specified in the `TESTFORGE_TEMPLATES_DIR` environment variable.
+2.  **Project Root**: The `.testforge/templates/` folder in your project root.
+3.  **Package Defaults**: The internal templates bundled with the library.
+
+### How to Customize
+The easiest way to start customizing is to "eject" the default templates into your workspace:
+
+```bash
+testforge init-templates
+```
+
+This command will copy all default `.j2` templates into your `.testforge/templates/` directory. You can then modify them as needed.
+
+### Available Templates
+| Template | Purpose | Key Context Variables |
+| :--- | :--- | :--- |
+| `plan_tests.j2` | Generates the Scientific Test Plan. | `module_path`, `deterministic_context`, `architecture_path` |
+| `generate_test_suite.j2` | Generates the actual `pytest` code. | `module_path`, `plan_path`, `test_path` |
+| `repair_test_suite.j2` | Used in the self-healing loop to fix failing tests. | `test_path`, `error_output` |
+| `summarize_architecture.j2` | Summarizes the architecture for the mapper phase. | `temp_arch_file` |

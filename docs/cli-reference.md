@@ -94,7 +94,9 @@ testforge generate [FILE_PATH] [OPTIONS]
 !!! info "Under the Hood: Single-File Logic"
     1.  **Isolation**: Clears the AI context to prevent "leaking" information from previous files.
     2.  **Deterministic Preview**: Summarizes the module's complexity and interface before calling the LLM.
-    3.  **Self-Healing Loop**: Runs up to 3 repair attempts if `pytest` fails, feeding the traceback directly back to the AI.
+    3.  **Syntax Pre-validation**: Before running heavy tests, we perform a static syntax check using Python's `ast`. If the test code is invalid, it is instantly routed back to the AI for repair.
+    4.  **Self-Healing Loop**: Runs up to 3 repair attempts if `pytest` fails. Instead of raw logs, we use **Smart Error Parsing** to extract only the `FAILURES` and `ERRORS` sections, truncating intelligently to preserve the LLM's context window.
+    5.  **Enriched Context Repair**: During repair, the AI context is strictly managed to include only the **target module source**, the **test plan**, and the **architecture map**, ensuring behavior alignment without context explosion.
 
 ---
 
