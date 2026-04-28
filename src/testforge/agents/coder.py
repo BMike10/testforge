@@ -146,11 +146,16 @@ class CoderAgent:
         )
         self.coder.run(prompt)
 
-    async def repair_test_suite(self, test_path: str, error_output: str):
+    async def repair_test_suite(self, test_path: str, error_output: str, module_path: Optional[str] = None, plan_path: Optional[str] = None, architecture_path: Optional[str] = None):
         """
-        Uses Aider to fix failing tests by providing the error output.
+        Uses Aider to fix failing tests by providing the error output and enriched context.
         """
-        self._initialize_coder([test_path], target_model=self.coder_model_name)
+        fnames = [test_path]
+        if module_path: fnames.append(module_path)
+        if plan_path: fnames.append(plan_path)
+        if architecture_path: fnames.append(architecture_path)
+
+        self._initialize_coder(fnames, target_model=self.coder_model_name)
         
         prompt = self.template_manager.render(
             "repair_test_suite.j2",

@@ -152,9 +152,10 @@ class Orchestrator:
 
     async def generate_and_validate(self, file_path: Path, project_root: Path, arch_map_path: Path, max_retries: int = 3, custom_context: Optional[List[str]] = None):
         """
-        Runs the multi-stage pipeline on a single file.
+        Runs the multi-stage pipeline on a single file with syntax pre-validation and smart repair.
         """
         rel_path = str(file_path.relative_to(project_root))
+        rel_arch_path = str(arch_map_path.relative_to(project_root))
         self.agent.clear_context()
         
         console.print(f"[yellow]Planning tests for {rel_path}...[/yellow]")
@@ -167,6 +168,24 @@ class Orchestrator:
         abs_test_path = project_root / test_path
         
         for attempt in range(max_retries + 1):
+            # 1. Syntax Pre-validation
+            syntax_check = Evaluator.validate_syntax(abs_test_path)
+            if not syntax_check["success"]:
+                console.print(f"[red]✘ Syntax error detected in {test_path} (Attempt {attempt + 1}).[/red]")
+                if attempt < max_retries:
+                    await self.agent.repair_test_suite(
+                        test_path, 
+                        syntax_check["error"], 
+                        module_path=rel_path, 
+                        plan_path=plan_path, 
+                        architecture_path=rel_arch_path
+                    )
+                    continue
+                else:
+                    console.print(f"[bold red]✘ Max retries reached for {rel_path} due to syntax errors.[/bold red]")
+                    return {"success": False, "error": syntax_check["error"]}
+
+            # 2. Pytest Execution
             results = Evaluator.run_pytest(abs_test_path)
             if results["success"]:
                 console.print(f"[green]✔ Tests passed for {rel_path}[/green]")
@@ -174,8 +193,15 @@ class Orchestrator:
             
             if attempt < max_retries:
                 console.print(f"[red]✘ Tests failed (Attempt {attempt + 1}). Repairing...[/red]")
-                error_output = results.get("stdout", "") + results.get("stderr", "")
-                await self.agent.repair_test_suite(test_path, error_output)
+                # Use the smartly truncated error summary
+                error_output = results.get("error_summary", results.get("stdout", "") + results.get("stderr", ""))
+                await self.agent.repair_test_suite(
+                    test_path, 
+                    error_output, 
+                    module_path=rel_path, 
+                    plan_path=plan_path, 
+                    architecture_path=rel_arch_path
+                )
             else:
                 console.print(f"[bold red]✘ Max retries reached for {rel_path}.[/bold red]")
                 return results

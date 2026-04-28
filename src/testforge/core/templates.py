@@ -15,7 +15,8 @@ class TemplateManager:
         self.user_templates_dir = self.project_root / ".testforge" / "templates"
         
         # Default package templates path
-        self.default_templates_dir = Path(__file__).parent.parent / "templates"
+        # Corrected to point to the 'templates' directory inside this module's folder.
+        self.default_templates_dir = Path(__file__).parent / "templates"
         
         # Set up Jinja2 environment to look in user dir first, then default dir
         search_paths = []
