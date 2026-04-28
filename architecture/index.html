@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://bmike10.github.io/testforge/cli-reference/">
+        <link rel="canonical" href="https://bmike10.github.io/testforge/architecture/">
       
       
-        <link rel="prev" href="../methodology/">
+        <link rel="prev" href="../getting-started/">
       
       
-        <link rel="next" href="../advanced/">
+        <link rel="next" href="../methodology/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>CLI Reference - TestForge</title>
+        <title>System Architecture - TestForge</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#cli-reference" class="md-skip">
+        <a href="#system-architecture" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              CLI Reference
+              System Architecture
             
           </span>
         </div>
@@ -263,9 +263,11 @@
   
   
   
+    
   
-    <li class="md-tabs__item">
-      <a href="../architecture/" class="md-tabs__link">
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
         
   
   
@@ -301,11 +303,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../cli-reference/" class="md-tabs__link">
         
   
   
@@ -459,10 +459,37 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../architecture/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    System Architecture
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -478,6 +505,109 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#high-level-system-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        High-Level System Components
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#execution-data-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Execution Data Flow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#core-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Components
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Core Components">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-testforge-core-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. TestForge Core Engine
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-ai-agent-layer-aider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. AI Agent Layer (Aider)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-validation-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Validation Layer
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deployment-privacy-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deployment &amp; Privacy Models
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -513,37 +643,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    CLI Reference
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../cli-reference/" class="md-nav__link">
         
   
   
@@ -559,81 +662,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#testforge-map" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        testforge map
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#testforge-run-all" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        testforge run-all
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#testforge-ci" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        testforge ci
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#testforge-generate" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        testforge generate
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#testforge-refactor-fixtures" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        testforge refactor-fixtures
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -719,10 +747,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#testforge-map" class="md-nav__link">
+  <a href="#high-level-system-components" class="md-nav__link">
     <span class="md-ellipsis">
       
-        testforge map
+        High-Level System Components
       
     </span>
   </a>
@@ -730,10 +758,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#testforge-run-all" class="md-nav__link">
+  <a href="#execution-data-flow" class="md-nav__link">
     <span class="md-ellipsis">
       
-        testforge run-all
+        Execution Data Flow
       
     </span>
   </a>
@@ -741,32 +769,60 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#testforge-ci" class="md-nav__link">
+  <a href="#core-components" class="md-nav__link">
     <span class="md-ellipsis">
       
-        testforge ci
+        Core Components
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Core Components">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-testforge-core-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. TestForge Core Engine
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#testforge-generate" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#2-ai-agent-layer-aider" class="md-nav__link">
     <span class="md-ellipsis">
       
-        testforge generate
+        2. AI Agent Layer (Aider)
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#testforge-refactor-fixtures" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#3-validation-layer" class="md-nav__link">
     <span class="md-ellipsis">
       
-        testforge refactor-fixtures
+        3. Validation Layer
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deployment-privacy-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deployment &amp; Privacy Models
       
     </span>
   </a>
@@ -793,117 +849,127 @@
   
 
 
-<h1 id="cli-reference">CLI Reference 🛠️<a class="headerlink" href="#cli-reference" title="Permanent link">&para;</a></h1>
-<p>Detailed documentation for the TestForge command-line interface. Each command is designed to be deterministic and transparent.</p>
+<h1 id="system-architecture">System Architecture 🏗️<a class="headerlink" href="#system-architecture" title="Permanent link">&para;</a></h1>
+<p>TestForge is engineered as a high-integrity bridge between <strong>Deterministic Static Analysis</strong> and <strong>Agentic AI</strong>. It treats AI not as an autonomous author, but as a specialized engine guided by strict scientific constraints and a deterministic pipeline.</p>
 <hr />
-<h2 id="testforge-map"><code>testforge map</code><a class="headerlink" href="#testforge-map" title="Permanent link">&para;</a></h2>
-<p>Builds the architectural topography of the codebase.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>testforge<span class="w"> </span>map<span class="w"> </span><span class="o">[</span>PATH<span class="o">]</span><span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
-</code></pre></div>
-<p><strong>Arguments</strong>:
-- <code>PATH</code>: Path to the codebase to analyze.</p>
-<p><strong>Options</strong>:
-- <code>--output PATH</code>: Output file for the architecture map. (Default: <code>architecture.md</code>)
-- <code>--mapper-model TEXT</code>: LLM model for the mapping phase.
-- <code>--dry-run</code>: Estimate tokens and cost without running AI.</p>
-<div class="admonition info">
-<p class="admonition-title">Under the Hood: Mapping Logic</p>
-<ol>
-<li><strong>File Discovery</strong>: Scans for all <code>.py</code> files, respecting <code>.gitignore</code>.</li>
-<li><strong>AST Analysis</strong>: Extracts classes, functions, and docstrings.</li>
-<li><strong>Cross-Reference</strong>: Matches internal imports to create the dependency mapping.</li>
-<li><strong>Markdown Generation</strong>: Formats the <code>ModuleInfo</code> objects into a human-readable <code>architecture.md</code>.</li>
-</ol>
-</div>
+<h2 id="high-level-system-components">High-Level System Components<a class="headerlink" href="#high-level-system-components" title="Permanent link">&para;</a></h2>
+<p>The following diagram illustrates how TestForge orchestrates the interaction between the user, the AI agent layer, and the validation engine.</p>
+<pre class="mermaid"><code>graph TD
+    User([User CLI]) --&gt; Core[TestForge Core Engine]
+
+    subgraph Core [TestForge Core]
+        Orchestrator[Orchestrator]
+        Context[Context Manager]
+        State[(State Ledger)]
+        Orchestrator --&gt; Context
+        Orchestrator --&gt; State
+    end
+
+    Core --&gt; AI[AI Agent Layer]
+
+    subgraph AI [AI Layer]
+        Aider[Aider API Wrapper]
+        Aider --&gt; Server{LLM Server}
+        Server --&gt; Cloud[Cloud: OpenAI/Anthropic]
+        Server --&gt; Local[Local: vLLM/LM Studio/Ollama]
+    end
+
+    Core --&gt; Validation[Validation Layer]
+
+    subgraph Validation [Validation &amp; Hardening]
+        Pytest[Pytest Engine]
+        Mutmut[Mutmut Hardening]
+    end
+
+    AI -.-&gt;|Generates/Repairs| Validation
+    Validation -.-&gt;|Feedback Loop| AI</code></pre>
 <hr />
-<h2 id="testforge-run-all"><code>testforge run-all</code><a class="headerlink" href="#testforge-run-all" title="Permanent link">&para;</a></h2>
-<p>The full iterative pipeline (Bottom-Up) on the entire codebase.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>testforge<span class="w"> </span>run-all<span class="w"> </span><span class="o">[</span>PATH<span class="o">]</span><span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
-</code></pre></div>
-<p><strong>Arguments</strong>:
-- <code>PATH</code>: Project root directory.</p>
-<p><strong>Options</strong>:
-- <code>--mapper-model TEXT</code>: LLM model for the mapping phase.
-- <code>--planner-model TEXT</code>: LLM model for the planning phase.
-- <code>--coder-model TEXT</code>: LLM model for the coding phase.
-- <code>--force</code>: Force run by clearing the execution ledger and ignore <code>execution_plan.yaml</code>.
-- <code>--dry-run</code>: Perform a full simulation and generate an editable execution plan.</p>
-<div class="admonition info">
-<p class="admonition-title">Under the Hood: The Master Pipeline</p>
-<ol>
-<li><strong>Dependency Sort</strong>: Builds the DAG and calculates the topological processing order.</li>
-<li><strong>Heuristic Filtering</strong>: Skips logic-less modules (0 classes/functions).</li>
-<li><strong>Execution Plan</strong>: <ul>
-<li>If <code>--dry-run</code>: Generates <code>execution_plan.yaml</code> and displays a detailed token/context report.</li>
-<li>If Standard Run: Checks for <code>execution_plan.yaml</code>. If found, it uses the <strong>user-modified order and context</strong>.</li>
-</ul>
-</li>
-<li><strong>State Management</strong>: Updates <code>.testforge/ledger.json</code> after every module to enable "Pause and Resume" capability.</li>
-<li><strong>Scientific Loop</strong>: For each module: <code>Plan -&gt; Generate -&gt; Pytest -&gt; Mutmut Hardening</code>.</li>
-<li><strong>Reporting</strong>: Displays the final visual dashboard with Milestone status.</li>
-</ol>
-</div>
+<h2 id="execution-data-flow">Execution Data Flow<a class="headerlink" href="#execution-data-flow" title="Permanent link">&para;</a></h2>
+<p>TestForge follows a strict <strong>Research -&gt; Plan -&gt; Execute -&gt; Validate</strong> lifecycle. This sequence ensures that every line of code generated is grounded in the actual architecture of your project.</p>
+<pre class="mermaid"><code>sequenceDiagram
+    participant U as User
+    participant T as TestForge
+    participant A as AI Agent (Aider)
+    participant V as Validation (Pytest)
+
+    U-&gt;&gt;T: run-all [PATH]
+    Note over T: Deterministic Phase
+    T-&gt;&gt;T: AST Mapping &amp; Dependency DAG
+    T-&gt;&gt;T: Bottom-Up Topological Sort
+
+    loop For each Module
+        Note over T: Strategy Phase
+        T-&gt;&gt;T: Extract Context &amp; Complexity
+        T-&gt;&gt;A: Strategic Test Plan Request
+        A--&gt;&gt;T: Plan (markdown)
+
+        Note over T: Execution Phase
+        T-&gt;&gt;A: Code Generation Request
+        A--&gt;&gt;T: Generated Test Suite
+
+        Note over T: Validation Phase
+        T-&gt;&gt;V: Syntax &amp; Pytest Run
+        alt Failure
+            V--&gt;&gt;T: Error Traceback (Truncated)
+            T-&gt;&gt;A: Repair Request (Enriched Context)
+            A--&gt;&gt;T: Fixed Test Suite
+        else Success
+            T-&gt;&gt;V: Mutation Testing (Mutmut)
+            V--&gt;&gt;T: Survival Report
+        end
+        T-&gt;&gt;T: Update State Ledger
+    end
+    T--&gt;&gt;U: Final Dashboard &amp; Reports</code></pre>
 <hr />
-<h2 id="testforge-ci"><code>testforge ci</code><a class="headerlink" href="#testforge-ci" title="Permanent link">&para;</a></h2>
-<p>CI/CD Headless Mode: Generate tests only for modified files and their dependents.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>testforge<span class="w"> </span>ci<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
-</code></pre></div>
-<p><strong>Options</strong>:
-- <code>--project-root PATH</code>: Project root directory.
-- <code>--base-branch TEXT</code>: Base branch to diff against. (Default: <code>main</code>)
-- <code>--dry-run</code>: Output topological order without running.</p>
-<div class="admonition info">
-<p class="admonition-title">Under the Hood: Change Analysis</p>
-<ol>
-<li><strong>Git Diff</strong>: Uses <code>GitPython</code> to identify files changed between the current HEAD and the <code>base-branch</code>.</li>
-<li><strong>Impact Analysis</strong>: Consults the dependency graph to find all modules that import the changed files (downstream dependents).</li>
-<li><strong>Targeted Run</strong>: Executes the <code>run-all</code> logic <strong>only</strong> on this subset of modules, ensuring PRs are verified without re-testing the entire codebase.</li>
-</ol>
-</div>
+<h2 id="core-components">Core Components<a class="headerlink" href="#core-components" title="Permanent link">&para;</a></h2>
+<h3 id="1-testforge-core-engine">1. TestForge Core Engine<a class="headerlink" href="#1-testforge-core-engine" title="Permanent link">&para;</a></h3>
+<p>The "Brain" of the operation. It handles the heavy lifting of understanding your code without using AI tokens.
+*   <strong>Orchestrator</strong>: Manages the pipeline lifecycle, concurrency, and error handling.
+*   <strong>Context Manager</strong>: Uses <code>libcst</code> and <code>ast</code> to map the codebase, calculate McCabe complexity, and build the Dependency DAG.
+*   <strong>State Ledger</strong>: A persistent JSON-based checkpointing system that allows the pipeline to pause, resume, and skip already-validated modules.</p>
+<h3 id="2-ai-agent-layer-aider">2. AI Agent Layer (Aider)<a class="headerlink" href="#2-ai-agent-layer-aider" title="Permanent link">&para;</a></h3>
+<p>We utilize <strong>Aider</strong> as our primary agentic engine. Aider provides a robust API for applying multi-file edits and maintaining a coherent "chat" context with the LLM. TestForge enriches Aider's prompts with deterministic data (like the architecture map and BVA requirements) to minimize hallucinations.</p>
+<h3 id="3-validation-layer">3. Validation Layer<a class="headerlink" href="#3-validation-layer" title="Permanent link">&para;</a></h3>
+<p>A test is only valid if it survives the fire of execution.
+*   <strong>Pytest</strong>: Runs the generated tests. TestForge captures and "smart-truncates" the output to keep repair prompts dense and cost-efficient.
+*   <strong>Mutmut</strong>: Injects "mutants" (intentional bugs) into your source code to verify that the generated tests actually fail when the logic changes.</p>
 <hr />
-<h2 id="testforge-generate"><code>testforge generate</code><a class="headerlink" href="#testforge-generate" title="Permanent link">&para;</a></h2>
-<p>Generates and validates a unit test suite for a single file.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>testforge<span class="w"> </span>generate<span class="w"> </span><span class="o">[</span>FILE_PATH<span class="o">]</span><span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
-</code></pre></div>
-<p><strong>Arguments</strong>:
-- <code>FILE_PATH</code>: The file to generate tests for.</p>
-<p><strong>Options</strong>:
-- <code>--project-root PATH</code>: Project root directory.
-- <code>--planner-model TEXT</code>: LLM model for the planning phase.
-- <code>--coder-model TEXT</code>: LLM model for the coding phase.
-- <code>--dry-run</code>: Estimate tokens and cost without running AI.</p>
-<div class="admonition info">
-<p class="admonition-title">Under the Hood: Single-File Logic</p>
-<ol>
-<li><strong>Isolation</strong>: Clears the AI context to prevent "leaking" information from previous files.</li>
-<li><strong>Deterministic Preview</strong>: Summarizes the module's complexity and interface before calling the LLM.</li>
-<li><strong>Syntax Pre-validation</strong>: Before running heavy tests, we perform a static syntax check using Python's <code>ast</code>. If the test code is invalid, it is instantly routed back to the AI for repair.</li>
-<li><strong>Self-Healing Loop</strong>: Runs up to 3 repair attempts if <code>pytest</code> fails. Instead of raw logs, we use <strong>Smart Error Parsing</strong> to extract only the <code>FAILURES</code> and <code>ERRORS</code> sections, truncating intelligently to preserve the LLM's context window.</li>
-<li><strong>Enriched Context Repair</strong>: During repair, the AI context is strictly managed to include only the <strong>target module source</strong>, the <strong>test plan</strong>, and the <strong>architecture map</strong>, ensuring behavior alignment without context explosion.</li>
-</ol>
-</div>
-<hr />
-<h2 id="testforge-refactor-fixtures"><code>testforge refactor-fixtures</code><a class="headerlink" href="#testforge-refactor-fixtures" title="Permanent link">&para;</a></h2>
-<p>Scans test files and elevates local fixtures to <code>conftest.py</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>testforge<span class="w"> </span>refactor-fixtures<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
-</code></pre></div>
-<p><strong>Options</strong>:
-- <code>--project-root PATH</code>: Project root directory.
-- <code>--coder-model TEXT</code>: LLM model for the refactoring phase.</p>
-<div class="admonition info">
-<p class="admonition-title">Under the Hood: Global Elevation</p>
-<ol>
-<li><strong>Discovery</strong>: Recursively scans the <code>tests/</code> directory for all files matching <code>test_*.py</code>.</li>
-<li><strong>State Initialization</strong>: Ensures a <code>tests/conftest.py</code> file exists to act as the destination.</li>
-<li><strong>Cross-File Analysis</strong>: Loads all test files and the <code>conftest.py</code> into the LLM's context.</li>
-<li><strong>Deduplication</strong>: The AI identifies <code>@pytest.fixture</code> definitions that are duplicated or highly similar across multiple files.</li>
-<li><strong>Refactoring</strong>: <ul>
-<li>Extracts the fixtures to <code>conftest.py</code>.</li>
-<li>Removes local definitions from individual test files.</li>
-<li>Updates imports and references to ensure tests remain functional and "dry".</li>
-</ul>
-</li>
-</ol>
+<h2 id="deployment-privacy-models">Deployment &amp; Privacy Models<a class="headerlink" href="#deployment-privacy-models" title="Permanent link">&para;</a></h2>
+<p>TestForge is model-agnostic. You can choose the infrastructure that fits your security requirements:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Component</th>
+<th style="text-align: left;">Cloud-First (SaaS)</th>
+<th style="text-align: left;">Local-First (Private)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Logic Engine</strong></td>
+<td style="text-align: left;">Local Machine</td>
+<td style="text-align: left;">Local Machine</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>AI Inference</strong></td>
+<td style="text-align: left;">OpenAI / Anthropic</td>
+<td style="text-align: left;">vLLM / LM Studio / Ollama</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>API Protocol</strong></td>
+<td style="text-align: left;">HTTPS (Encrypted)</td>
+<td style="text-align: left;">Localhost (No Data Leaves)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Performance</strong></td>
+<td style="text-align: left;">High Reasoning</td>
+<td style="text-align: left;">High Privacy / Zero Cost</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="admonition-title">Hybrid Strategy</p>
+<p>Many users use a fast local model (like <code>Qwen-2.5-Coder</code>) for the <strong>Mapping Phase</strong> and a heavy cloud model (like <code>o1-preview</code> or <code>gpt-4o</code>) for the <strong>Strategic Planning Phase</strong>.</p>
 </div>
 
 

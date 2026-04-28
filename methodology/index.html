@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://bmike10.github.io/testforge/methodology/">
       
       
-        <link rel="prev" href="../getting-started/">
+        <link rel="prev" href="../architecture/">
       
       
         <link rel="next" href="../cli-reference/">
@@ -263,6 +263,25 @@
   
   
   
+  
+    <li class="md-tabs__item">
+      <a href="../architecture/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  System Architecture
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
     
   
   
@@ -440,6 +459,33 @@
       
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    System Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
     
   
   
@@ -547,10 +593,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-mutation-guided-hardening" class="md-nav__link">
+  <a href="#5-context-efficient-smart-validation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. Mutation-Guided Hardening
+        5. Context-Efficient Smart Validation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-mutation-guided-hardening" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Mutation-Guided Hardening
       
     </span>
   </a>
@@ -717,10 +774,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-mutation-guided-hardening" class="md-nav__link">
+  <a href="#5-context-efficient-smart-validation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. Mutation-Guided Hardening
+        5. Context-Efficient Smart Validation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-mutation-guided-hardening" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Mutation-Guided Hardening
       
     </span>
   </a>
@@ -799,7 +867,19 @@
 <li><strong>Simulated Execution</strong>: The prompt template (<code>plan_tests.j2</code>) requires the AI to trace every logical path identified in the McCabe analysis and design inputs that specifically trigger those paths.</li>
 </ul>
 <hr />
-<h2 id="5-mutation-guided-hardening">5. Mutation-Guided Hardening<a class="headerlink" href="#5-mutation-guided-hardening" title="Permanent link">&para;</a></h2>
+<h2 id="5-context-efficient-smart-validation">5. Context-Efficient Smart Validation<a class="headerlink" href="#5-context-efficient-smart-validation" title="Permanent link">&para;</a></h2>
+<p><strong>The Problem</strong>: Iterative repair cycles can lead to "Context Explosion." Feeding large tracebacks or the entire codebase into an LLM repeatedly causes high costs, slow responses, and increased hallucination rates.</p>
+<p><strong>The Solution</strong>: TestForge implements a multi-stage <strong>Smart Validation Pipeline</strong>.</p>
+<div class="admonition info">
+<p class="admonition-title">Under the Hood: Smart Repair Logic</p>
+<ol>
+<li><strong>Syntax Pre-validation</strong>: We run a static syntax check using <code>ast.parse()</code> on every generated test. If a syntax error is found, we bypass the heavy <code>pytest</code> execution and immediately task the AI with fixing the code structure.</li>
+<li><strong>Smart Error Truncation</strong>: When tests fail, we don't send the full raw output. Our regex-based parser extracts only the <code>FAILURES</code>, <code>ERRORS</code>, and <code>short test summary info</code> sections. If the output is still too large, it is truncated from the middle to preserve the most critical failure signals.</li>
+<li><strong>Enriched Context Isolation</strong>: During repair, we initialize a focused AI context containing only the target module source, the original test plan, and the system architecture map. This prevents the agent from losing sight of the engineering intent or getting lost in unrelated dependencies.</li>
+</ol>
+</div>
+<hr />
+<h2 id="6-mutation-guided-hardening">6. Mutation-Guided Hardening<a class="headerlink" href="#6-mutation-guided-hardening" title="Permanent link">&para;</a></h2>
 <p><strong>The Problem</strong>: 100% line coverage is a "vanity metric." You can execute a line without actually asserting its behavior is correct.</p>
 <p><strong>The Solution</strong>: We use <strong>Fault Injection</strong> via <code>mutmut</code> to prove test rigor.</p>
 <div class="admonition danger">

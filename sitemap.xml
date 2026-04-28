@@ -2,30 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://bmike10.github.io/testforge/</loc>
-         <lastmod>2026-04-27</lastmod>
+         <lastmod>2026-04-28</lastmod>
     </url>
     <url>
          <loc>https://bmike10.github.io/testforge/advanced/</loc>
-         <lastmod>2026-04-27</lastmod>
+         <lastmod>2026-04-28</lastmod>
+    </url>
+    <url>
+         <loc>https://bmike10.github.io/testforge/architecture/</loc>
+         <lastmod>2026-04-28</lastmod>
     </url>
     <url>
          <loc>https://bmike10.github.io/testforge/cli-reference/</loc>
-         <lastmod>2026-04-27</lastmod>
+         <lastmod>2026-04-28</lastmod>
     </url>
     <url>
          <loc>https://bmike10.github.io/testforge/contributing/</loc>
-         <lastmod>2026-04-27</lastmod>
+         <lastmod>2026-04-28</lastmod>
     </url>
     <url>
          <loc>https://bmike10.github.io/testforge/getting-started/</loc>
-         <lastmod>2026-04-27</lastmod>
+         <lastmod>2026-04-28</lastmod>
     </url>
     <url>
          <loc>https://bmike10.github.io/testforge/methodology/</loc>
-         <lastmod>2026-04-27</lastmod>
+         <lastmod>2026-04-28</lastmod>
     </url>
     <url>
          <loc>https://bmike10.github.io/testforge/notes/testforge_notes/</loc>
-         <lastmod>2026-04-27</lastmod>
+         <lastmod>2026-04-28</lastmod>
     </url>
 </urlset>
