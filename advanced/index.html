@@ -700,6 +700,45 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Template Overrides">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-overriding-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Overriding Logic
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-to-customize" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to Customize
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#available-templates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Available Templates
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -861,6 +900,45 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Template Overrides">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-overriding-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Overriding Logic
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-to-customize" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to Customize
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#available-templates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Available Templates
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -953,12 +1031,49 @@
 </div>
 <hr />
 <h2 id="template-overrides">Template Overrides<a class="headerlink" href="#template-overrides" title="Permanent link">&para;</a></h2>
-<p>Every LLM interaction is based on Jinja2 templates. You can customize these to enforce your company's coding standards.</p>
-<ol>
-<li>Create a folder named <code>.testforge/templates/</code> in your project root.</li>
-<li>Copy any default template from the TestForge source (e.g., <code>plan_tests.j2</code>).</li>
-<li>Modify the copy. TestForge will now prioritize your local version.</li>
-</ol>
+<p>Every LLM interaction is based on Jinja2 templates. You can customize these to enforce your company's coding standards or add specific scientific constraints.</p>
+<h3 id="the-overriding-logic">The Overriding Logic<a class="headerlink" href="#the-overriding-logic" title="Permanent link">&para;</a></h3>
+<p>TestForge searches for templates in the following order of priority:
+1.  <strong>Custom Directory</strong>: The path specified in the <code>TESTFORGE_TEMPLATES_DIR</code> environment variable.
+2.  <strong>Project Root</strong>: The <code>.testforge/templates/</code> folder in your project root.
+3.  <strong>Package Defaults</strong>: The internal templates bundled with the library.</p>
+<h3 id="how-to-customize">How to Customize<a class="headerlink" href="#how-to-customize" title="Permanent link">&para;</a></h3>
+<p>The easiest way to start customizing is to "eject" the default templates into your workspace:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>testforge<span class="w"> </span>init-templates
+</code></pre></div>
+<p>This command will copy all default <code>.j2</code> templates into your <code>.testforge/templates/</code> directory. You can then modify them as needed.</p>
+<h3 id="available-templates">Available Templates<a class="headerlink" href="#available-templates" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Template</th>
+<th style="text-align: left;">Purpose</th>
+<th style="text-align: left;">Key Context Variables</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>plan_tests.j2</code></td>
+<td style="text-align: left;">Generates the Scientific Test Plan.</td>
+<td style="text-align: left;"><code>module_path</code>, <code>deterministic_context</code>, <code>architecture_path</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>generate_test_suite.j2</code></td>
+<td style="text-align: left;">Generates the actual <code>pytest</code> code.</td>
+<td style="text-align: left;"><code>module_path</code>, <code>plan_path</code>, <code>test_path</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>repair_test_suite.j2</code></td>
+<td style="text-align: left;">Used in the self-healing loop to fix failing tests.</td>
+<td style="text-align: left;"><code>test_path</code>, <code>error_output</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>summarize_architecture.j2</code></td>
+<td style="text-align: left;">Summarizes the architecture for the mapper phase.</td>
+<td style="text-align: left;"><code>temp_arch_file</code></td>
+</tr>
+</tbody>
+</table>
 
 
 
