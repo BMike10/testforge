@@ -1,0 +1,36 @@
+Analyze the module code and its architectural context provided below, along with the deterministic metadata.
+
+### Module Code ({{ module_path }}):
+```python
+{{ module_code }}
+```
+
+### Architectural Context:
+{{ architecture_map }}
+
+{% if deterministic_context %}
+### Deterministic Analysis Metadata:
+- **Total Cyclomatic Complexity**: {{ deterministic_context.get('total_complexity', 'Unknown') }}
+- **Internal Dependencies**: {{ deterministic_context.get('internal_dependencies', []) }}
+- **Public Interface Surface**: {{ deterministic_context.get('interface_summary', 'Unknown') }}
+{% endif %}
+
+{% block goal %}
+Your goal is to generate a 'Scientific Test Plan' in `{{ plan_file }}`.
+{% endblock %}
+
+{% block constraints %}
+The plan MUST include:
+1. **Risk-Based Prioritization**: Focus on high-complexity functions/methods first based on the deterministic metadata.
+2. **Mocking Strategy**: Explicitly list which internal and external dependencies must be mocked based on the architectural context.
+3. **Boundary Value Analysis (BVA)**: Identify input equivalence classes and explicitly list boundary condition tests for all public methods (e.g., $n-1$, $n$, $n+1$).
+4. **Dynamic Symbolic Execution (DSE) Simulation**: Map out all logical branching paths (if/else/try/except) and define the explicit inputs required to satisfy each unique path.
+5. **Contract Verification**: Ensure the module's "promises" to its dependents are verified.
+{% endblock %}
+
+CRITICAL INSTRUCTIONS:
+{% block critical_instructions %}
+1. DO NOT include any introductory or concluding conversational text.
+2. DO NOT include internal thinking blocks or tags (e.g., `<think>`, `► THINKING`).
+3. Focus ONLY on generating the Markdown content for `{{ plan_file }}`.
+{% endblock %}

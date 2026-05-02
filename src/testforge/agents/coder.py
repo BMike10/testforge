@@ -1,4 +1,7 @@
 import os
+import io
+import re
+import litellm
 from typing import List, Optional
 from aider.coders import Coder
 from aider.models import Model
@@ -8,8 +11,8 @@ from testforge.core.templates import TemplateManager
 
 class CoderAgent:
     """
-    Agent responsible for generating code and test plans using Aider.
-    Leverages Aider's Python API for advanced context management and file editing.
+    Agent responsible for generating code and test plans using Aider or direct LLM calls.
+    Leverages Aider for file editing and direct LiteLLM for lightweight analysis.
     """
 
     def __init__(self, mapper_model: Optional[str] = None, planner_model: Optional[str] = None, coder_model: Optional[str] = None):
@@ -23,7 +26,18 @@ class CoderAgent:
         
         self._setup_env()
 
-        self.io = InputOutput(yes=True)
+        # Initialize Aider in silent mode to prevent I/O pollution for editing tasks
+        self.silent_stream = open(os.devnull, 'w')
+        self.io = InputOutput(
+            yes=True, 
+            pretty=False, 
+            fancy_input=False,
+            output=self.silent_stream
+        )
+        # Manually override Aider's internal console to ensure it respects our silent stream
+        from rich.console import Console
+        self.io.console = Console(file=self.silent_stream, force_terminal=False, no_color=True)
+        
         self.coder: Optional[Coder] = None
         self.template_manager = TemplateManager()
         
@@ -52,9 +66,6 @@ class CoderAgent:
             self.current_model_name = target_model_name
             self.main_model = Model(self._format_model_name(self.current_model_name))
             if self.coder:
-                # If coder already exists, we might need to recreate it or update its main_model
-                # To be safe and clean, we recreate it when switching models if context is not needed,
-                # but Aider's Coder allows setting main_model directly.
                 self.coder.main_model = self.main_model
 
     def _initialize_coder(self, fnames: List[str], target_model: Optional[str] = None):
@@ -75,7 +86,9 @@ class CoderAgent:
                 main_model=self.main_model,
                 io=self.io,
                 fnames=fnames,
-                auto_commits=False
+                auto_commits=False,
+                map_tokens=0,
+                stream=False
             )
 
     def add_context(self, file_paths: List[str]):
@@ -90,46 +103,86 @@ class CoderAgent:
         """
         self.coder = None
 
+    def _sanitize_response(self, text: str) -> str:
+        """
+        Cleans the LLM response of internal UI markers and conversational drift.
+        """
+        # Remove Aider/Model specific markers
+        text = re.sub(r'► (THINKING|ANSWER)', '', text)
+        text = re.sub(r'┏━+┓|┗━+┛|┃', '', text)
+        
+        # Extract reasoning content if present (common in some models)
+        # This is a bit tricky, but let's try to find the actual content
+        # Most models will put the final answer after the reasoning.
+        
+        # If the model wrapped the response in markdown blocks, extract only the content
+        md_match = re.search(r'```markdown\n(.*?)\n```', text, re.DOTALL)
+        if md_match:
+            return md_match.group(1).strip()
+            
+        return text.strip()
+
+    async def _direct_inference(self, prompt: str, model_name: str) -> str:
+        """
+        Executes a direct completion call bypassing Aider's heavy system prompts.
+        Ideal for summarization and planning tasks.
+        """
+        messages = [{"role": "user", "content": prompt}]
+        
+        formatted_model = self._format_model_name(model_name)
+        
+        response = litellm.completion(
+            model=formatted_model,
+            messages=messages,
+            api_base=self.api_base,
+            api_key=self.api_key
+        )
+        
+        return response.choices[0].message.content
+
     async def summarize_architecture(self, architecture_map: str) -> str:
         """
         Uses AI to generate a high-level semantic summary of the architecture map.
+        Uses direct inference to prevent conversational drift in small models.
         """
-        # Aider works best with files in context. 
-        # We'll create a temporary file for the architecture map to give Aider context.
-        temp_arch_file = "temp_architecture_map.txt"
-        with open(temp_arch_file, "w") as f:
-            f.write(architecture_map)
-        
-        self._initialize_coder([temp_arch_file], target_model=self.mapper_model_name)
-        
         prompt = self.template_manager.render(
             "summarize_architecture.j2",
-            temp_arch_file=temp_arch_file
+            architecture_map=architecture_map
         )
-        response = self.coder.run(prompt)
         
-        # Cleanup temp file
-        if os.path.exists(temp_arch_file):
-            os.remove(temp_arch_file)
-            
-        return response
+        response = await self._direct_inference(prompt, self.mapper_model_name)
+        return self._sanitize_response(response)
 
     async def plan_tests(self, module_path: str, architecture_path: str, deterministic_context: Optional[dict] = None) -> str:
         """
-        Instructs Aider to create a test plan for the given module, incorporating deterministic analysis.
+        Instructs the LLM to create a test plan for the given module.
+        Uses direct inference to bypass Aider's system prompt.
         """
-        self._initialize_coder([module_path, architecture_path], target_model=self.planner_model_name)
+        # Read files for injection
+        with open(module_path, "r") as f:
+            module_code = f.read()
+        
+        with open(architecture_path, "r") as f:
+            architecture_map = f.read()
+
         plan_file = f"test_plan_{Path(module_path).stem}.md"
         
         prompt = self.template_manager.render(
             "plan_tests.j2",
             module_path=module_path,
+            module_code=module_code,
+            architecture_map=architecture_map,
             deterministic_context=deterministic_context,
-            plan_file=plan_file,
-            architecture_path=architecture_path
+            plan_file=plan_file
         )
         
-        self.coder.run(prompt)
+        response = await self._direct_inference(prompt, self.planner_model_name)
+        sanitized_plan = self._sanitize_response(response)
+        
+        # Write the plan to disk (current working directory/root)
+        with open(plan_file, "w") as f:
+            f.write(sanitized_plan)
+            
         return plan_file
 
     async def generate_test_suite(self, module_path: str, plan_path: str, test_path: str):

@@ -90,12 +90,24 @@ The easiest way to start customizing is to "eject" the default templates into yo
 testforge init-templates
 ```
 
-This command will copy all default `.j2` templates into your `.testforge/templates/` directory. You can then modify them as needed.
+This command will copy the top-level `.j2` templates into your `.testforge/templates/` directory. 
+
+!!! info "Template Inheritance"
+    Default templates now use Jinja2 inheritance. For example, `plan_tests.j2` contains:
+    ```jinja2
+    {% extends "base/base_plan_tests.j2" %}
+    ```
+    This means you can customize specific parts of the prompt by overriding `{% block %}` sections (e.g., `critical_instructions`) while keeping the core logic intact.
+
+### Strict Validation & Drift Detection
+TestForge employs **Smart Template Validation** to ensure reliability:
+*   **Strict Mode**: If a template expects a variable that isn't provided by the code, TestForge will raise an error immediately.
+*   **AST Drift Detection**: TestForge uses AST analysis to identify variables passed from the code that are *not* used in your custom template. If drift is detected, a warning will be emitted.
 
 ### Available Templates
 | Template | Purpose | Key Context Variables |
 | :--- | :--- | :--- |
-| `plan_tests.j2` | Generates the Scientific Test Plan. | `module_path`, `deterministic_context`, `architecture_path` |
-| `generate_test_suite.j2` | Generates the actual `pytest` code. | `module_path`, `plan_path`, `test_path` |
+| `plan_tests.j2` | Generates the Scientific Test Plan. | `module_path`, `module_code`, `architecture_map`, `deterministic_context`, `plan_file` |
+| `generate_test_suite.j2` | Generates the actual `pytest` code. | `plan_path`, `module_path`, `test_path` |
 | `repair_test_suite.j2` | Used in the self-healing loop to fix failing tests. | `test_path`, `error_output` |
-| `summarize_architecture.j2` | Summarizes the architecture for the mapper phase. | `temp_arch_file` |
+| `summarize_architecture.j2` | Summarizes the architecture for the mapper phase. | `architecture_map` |

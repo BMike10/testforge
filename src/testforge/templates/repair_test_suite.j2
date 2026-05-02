@@ -1,9 +1,1 @@
-The tests in `{{ test_path }}` are failing with the following output:
-```
-{{ error_output }}
-```
-Please analyze the failures and fix the tests in `{{ test_path }}`. 
-
-The target module code, the original test plan, and the project architecture are included in your context for reference. 
-Ensure the fixes are consistent with the scientific mandates (Boundary Value Analysis, McCabe complexity prioritization) and the intended test design described in the plan.
-All fixes should be behaviorally rigorous and scientifically validated.
+{% extends "base/base_repair_test_suite.j2" %}

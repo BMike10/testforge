@@ -1,12 +1,1 @@
-Based on the rigorous scientific test plan defined in `{{ plan_path }}`, generate a complete, enterprise-grade `pytest`-based unit test suite for `{{ module_path }}`.
-
-Save the generated code into `{{ test_path }}`.
-
-Strict Constraints for Generation:
-1. **Boundary Value Constraints (BVA)**: You MUST implement distinct test cases for every boundary condition identified in the plan (e.g., $n-1$, $n$, $n+1$, null states, extreme limits).
-2. **DSE Path Coverage**: You MUST implement tests that provide the exact inputs required to traverse every logical branch mapped out in the plan's DSE Simulation section.
-3. **Mocking & Isolation**: Strictly follow the Mocking Strategy from the plan. Do not test downstream dependencies; mock them to ensure true unit isolation.
-4. **Resilience**: Ensure assertions are robust enough to survive mutation testing (`mutmut`). Avoid weak assertions like `assert response is not None` when exact structural or value checks are possible.
-5. **Fixtures**: Use local `@pytest.fixture` functions within the file for setup data unless a global strategy is explicitly dictated by the plan.
-
-Ensure 100% coverage of high-risk and complex paths. Output the final Python code and save it to `{{ test_path }}`.
+{% extends "base/base_generate_test_suite.j2" %}

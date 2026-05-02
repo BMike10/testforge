@@ -1,0 +1,21 @@
+The tests in `{{ test_path }}` are failing with the following output:
+```
+{{ error_output }}
+```
+Please analyze the failures and fix the tests in `{{ test_path }}`. 
+
+{% block referenece_context %}
+The target module code, the original test plan, and the project architecture are included in your context for reference. 
+{% endblock %}
+
+{% block goals %}
+Ensure the fixes are consistent with the scientific mandates (Boundary Value Analysis, McCabe complexity prioritization) and the intended test design described in the plan.
+All fixes should be behaviorally rigorous and scientifically validated.
+{% endblock %}
+
+CRITICAL INSTRUCTIONS:
+{% block critical_instructions %}
+1. DO NOT include any introductory or concluding conversational text.
+2. DO NOT include internal thinking blocks or tags (e.g., `<think>`, `► THINKING`).
+3. Focus ONLY on applying the necessary fixes to the code.
+{% endblock %}

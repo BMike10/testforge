@@ -312,10 +312,10 @@ def init_templates(
     if not target_dir.exists():
         target_dir.mkdir(parents=True)
         
-    # Copy all .j2 files
-    templates = list(source_dir.glob("*.j2"))
+    # Copy all .j2 files from the top-level directory (excluding 'base')
+    templates = [t for t in source_dir.glob("*.j2") if t.is_file()]
     if not templates:
-        console.print(f"[yellow]No templates found in {source_dir}[/yellow]")
+        console.print(f"[yellow]No top-level templates found in {source_dir}[/yellow]")
         return
         
     for template in templates:
@@ -324,7 +324,8 @@ def init_templates(
         console.print(f" - [green]Copied:[/green] {template.name}")
         
     console.print("\n[bold green]Success![/bold green] You can now customize your templates in the target directory.")
-    console.print("TestForge will prioritize these templates over the package defaults.")
+    console.print("These templates use inheritance ({% extends %}). You can override specific blocks")
+    console.print("to customize prompts while keeping the core logic from the package defaults.")
 
 if __name__ == "__main__":
     app()

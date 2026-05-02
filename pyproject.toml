@@ -42,4 +42,4 @@ testpaths = ["tests"]
 pythonpath = ["src"]
 
 [tool.setuptools.package-data]
-testforge = ["templates/*.j2"]
+testforge = ["templates/*.j2", "templates/base/*.j2"]

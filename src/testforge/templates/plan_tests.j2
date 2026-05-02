@@ -1,17 +1,1 @@
-Analyze the module `{{ module_path }}` using its code and the deterministic metadata below.
-{% if deterministic_context %}
-### Deterministic Analysis Metadata:
-- **Total Cyclomatic Complexity**: {{ deterministic_context.get('total_complexity', 'Unknown') }}
-- **Internal Dependencies**: {{ deterministic_context.get('internal_dependencies', []) }}
-- **Public Interface Surface**: {{ deterministic_context.get('interface_summary', 'Unknown') }}
-{% endif %}
-
-Your goal is to generate a 'Scientific Test Plan' in `{{ plan_file }}`.
-The plan MUST include:
-1. **Risk-Based Prioritization**: Focus on high-complexity functions/methods first based on the deterministic metadata.
-2. **Mocking Strategy**: Explicitly list which internal and external dependencies must be mocked based on the architecture in `{{ architecture_path }}`.
-3. **Boundary Value Analysis (BVA)**: Identify input equivalence classes and explicitly list boundary condition tests for all public methods (e.g., $n-1$, $n$, $n+1$).
-4. **Dynamic Symbolic Execution (DSE) Simulation**: Map out all logical branching paths (if/else/try/except) and define the explicit inputs required to satisfy each unique path.
-5. **Contract Verification**: Ensure the module's "promises" to its dependents are verified.
-
-Output the detailed markdown plan into `{{ plan_file }}`.
+{% extends "base/base_plan_tests.j2" %}
